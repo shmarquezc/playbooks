@@ -1,0 +1,5 @@
+[dbservers]
+node1
+
+[webservers]
+node2
