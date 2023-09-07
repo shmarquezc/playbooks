@@ -1,0 +1,6 @@
+[dbservers]
+control
+node1
+
+[webservers]
+node2
