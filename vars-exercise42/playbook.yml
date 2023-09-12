@@ -16,6 +16,7 @@
         name:
           - "{{ web_pkg }}"
           - "{{ firewall_pkg }}"
+          - "{{ python_pkg }} "
         state: present
 
     - name: Ensure enabled and running "{{ web_service }}"
