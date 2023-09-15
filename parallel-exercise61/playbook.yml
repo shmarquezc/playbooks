@@ -1,0 +1,19 @@
+---
+- name: Update apache
+  hosts: webservers
+  serial: 1
+
+  tasks:
+    - name: Latest version of apache installed
+      ansible.builtin.dnf:
+        name: httpd
+        state: latest
+      notify:
+        - Restart apache
+
+  handlers:
+    - name: Restart apache
+      ansible.builtin.service:
+        name: httpd
+        enabled: yes
+        state: restarted
