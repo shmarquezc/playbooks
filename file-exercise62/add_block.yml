@@ -1,0 +1,13 @@
+---
+- name: use the blocking file module to  insert/modify/delete text block
+  hosts: servers
+  remote_user: automation
+  become: false
+  tasks:
+  - name: Add a block of text to an existing file
+    ansible.builtin.blockinfile:
+      path: /home/automation/users.txt
+      block: |
+        This block of text consists of two lines.
+        They have been added by the blockinfile module.
+      state: present

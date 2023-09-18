@@ -1,0 +1,13 @@
+---
+- name: use the file module to change propierties selinux
+  hosts: all
+  remote_user: automation
+  become : false
+  tasks:
+  - name: SELinux file context is set to defaults
+    ansible.builtin.file:
+      path: /home/automation/users.txt
+      seuser: _default
+      serole: _default
+      setype: _default
+      selevel: _default
