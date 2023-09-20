@@ -1,0 +1,40 @@
+---
+# tasks file for wordpress
+- name: Download WordPress
+  ansible.builtin.get_url: 
+    url: https://wordpress.org/wordpress-6.3.1.tar.gz
+    dest: /tmp/wordpress.tar.gz
+    validate_certs: no
+
+- name: Extract WordPress
+  ansible.builtin.unarchive: 
+    src: /tmp/wordpress.tar.gz 
+    dest: /var/www/html
+    copy: no
+
+- name: Copy sample config file
+  ansible.builtin.copy:
+    src: /var/www/html/wordpress/wp-config-sample.php
+    dest: /var/www/html/wordpress/wp-config.php
+    remote_src: yes
+
+- name: Update WordPress config file
+  ansible.builtin.lineinfile:
+    dest: /var/www/html/wordpress/wp-config.php
+    regexp: "{{ item.regexp }}"
+    line: "{{ item.line }}"
+  with_items:
+    - {'regexp': "define\\( 'DB_NAME', '(.)+' \\);", 'line': "define( 'DB_NAME', '{{wp_mysql_db}}' );"}        
+    - {'regexp': "define\\( 'DB_USER', '(.)+' \\);", 'line': "define( 'DB_USER', '{{wp_mysql_user}}' );"}        
+    - {'regexp': "define\\( 'DB_PASSWORD', '(.)+' \\);", 'line': "define( 'DB_PASSWORD', '{{wp_mysql_password}}' );"}
+  notify:
+    - restart apache
+
+- name: Open service http in firewall
+  ansible.posix.firewalld:
+    service: http 
+    zone: public
+    permanent: yes
+    immediate: yes
+    state: enabled
+

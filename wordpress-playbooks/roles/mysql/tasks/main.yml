@@ -1,0 +1,19 @@
+---
+# tasks file for mysql
+- name: Ensure the database service is started
+  ansible.builtin.service:
+    name: mariadb
+    state: started
+    enabled: true
+
+- name: Create mysql database
+  community.mysql.mysql_db:
+    name: "{{ wp_mysql_db }}"
+    state: present
+
+- name: Create mysql user
+  community.mysql.mysql_user: 
+    name: "{{ wp_mysql_user }}"
+    password: "{{ wp_mysql_password }}"
+    priv: '*.*:ALL'
+

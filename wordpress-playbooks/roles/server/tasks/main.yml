@@ -1,0 +1,17 @@
+---
+# tasks file for server
+- name: Install required software
+  ansible.builtin.dnf:
+    name: 
+      - httpd 
+      - php-mysqlnd
+      - php
+      - php-gd
+      - mariadb
+      - mariadb-server
+      - php-common
+      - php-xml
+      - php-mbstring 
+      - python3-PyMySQL
+    state: present
+
